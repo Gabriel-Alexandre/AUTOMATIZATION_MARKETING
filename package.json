@@ -1,0 +1,26 @@
+{
+  "name": "automatization_marketing",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "start": "node twitter-post-bot.js",
+    "debug": "playwright test --debug",
+    "report": "playwright show-report"
+  },
+  "keywords": [
+    "twitter",
+    "automation",
+    "playwright",
+    "claude",
+    "openrouter"
+  ],
+  "author": "",
+  "license": "ISC",
+  "description": "Twitter automation bot that posts AI-generated content using Playwright and Claude 3.5",
+  "dependencies": {
+    "@playwright/test": "^1.40.0",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1"
+  }
+}

@@ -6,3 +6,4 @@ node_modules
 # Ignorar pastas de resultados de testes
 /test-results
 /playwright-report
+/img-twitter-execution

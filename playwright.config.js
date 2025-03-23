@@ -33,7 +33,33 @@ module.exports = defineConfig({
     screenshot: 'only-on-failure',
     
     /* Record video of test execution */
-    video: 'on-first-retry'
+    video: 'on-first-retry',
+    
+    /* Extended timeout para páginas carregarem */
+    navigationTimeout: 120000,
+    
+    /* Tempo de espera para ações */
+    actionTimeout: 30000,
+    
+    /* Retry on browser error */
+    retry: 2,
+    
+    /* Configurações adicionais do navegador */
+    launchOptions: {
+      slowMo: 100, // Desacelera a execução para maior estabilidade
+      args: [
+        '--disable-web-security',
+        '--disable-features=IsolateOrigins',
+        '--disable-site-isolation-trials',
+        '--disable-features=BlockInsecurePrivateNetworkRequests'
+      ]
+    },
+
+    /* Configure proxy but bypass Twitter domains */
+    /*proxy: {
+      server: 'http://localhost:8000',
+      // Não vamos mais fazer bypass de domínios
+    },*/
   },
 
   /* Configure projects for major browsers */

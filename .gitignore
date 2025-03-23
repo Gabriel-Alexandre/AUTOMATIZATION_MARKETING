@@ -1,3 +1,8 @@
 node_modules
 .env
-
+.env.local
+# Ignorar arquivos PNG na raiz
+*.png
+# Ignorar pastas de resultados de testes
+/test-results
+/playwright-report

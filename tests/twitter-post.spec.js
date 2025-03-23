@@ -2,45 +2,68 @@ const { test, expect } = require('@playwright/test');
 const axios = require('axios');
 require('dotenv').config();
 
-const CONTENT = `
-Anthropic has announced its AI assistant Claude can now search the web, providing users with more up-to-date and relevant responses.
+// Function to fetch AI news from the web
+async function fetchAINews() {
+  try {
+    console.log('Buscando notícias sobre IA na internet...');
+    
+    const response = await axios.get('https://newsapi.org/v2/everything', {
+      params: {
+        q: 'artificial intelligence',
+        language: 'en',
+        sortBy: 'publishedAt',
+        pageSize: 5
+      },
+      headers: {
+        'X-Api-Key': process.env.NEWS_API_KEY
+      }
+    });
+    
+    if (response.data && response.data.articles && response.data.articles.length > 0) {
+      // Select the first article
+      const article = response.data.articles[0];
+      
+      // Format the content
+      const content = `
+${article.title}
 
-This integration of web search functionality means Claude can now access the latest information to expand its knowledge base beyond its initial training data.
+${article.description}
 
-A key feature of this update is the emphasis on transparency and fact-checking. Anthropic highlights that “When Claude incorporates information from the web into its responses, it provides direct citations so you can easily fact check sources.”
+${article.content}
 
-Furthermore, Claude aims to streamline the information-gathering process for users. Instead of requiring users to manually sift through search engine results, “Claude processes and delivers relevant sources in a conversational format.”
+Source: ${article.source.name}
+URL: ${article.url}
+`;
+      
+      console.log('Notícia encontrada com sucesso');
+      return content;
+    } else {
+      throw new Error('Nenhuma notícia encontrada');
+    }
+  } catch (error) {
+    console.error('Erro ao buscar notícias de IA:', error.message);
+    // Return fallback content if fetch fails
+    return `
+Artificial Intelligence continues to transform industries with breakthrough innovations.
 
-Claude can now search the web.
+Recent developments in AI models have shown significant improvements in language understanding,
+vision processing, and decision-making capabilities.
 
-Each response includes inline citations, so you can also verify the sources. pic.twitter.com/iFshgfUEp8
+Researchers are focusing on making AI systems more transparent, ethical, and aligned with human values.
 
-— Anthropic (@AnthropicAI)
-March 20, 2025
-Anthropic believes this enhancement will unlock a multitude of new use cases for Claude across various industries. They outlined several ways users can leverage Claude with web search:
-
-Sales teams: Can now “transform account planning and drive higher win rates through informed conversations with prospects by analysing industry trends to learn key initiatives and pain points.” This allows sales professionals to have more informed and persuasive conversations with potential clients.
-Financial analysts: Can “assess current market data, earnings reports, and industry trends to make better investment decisions and inform financial model assumptions.” Access to real-time financial data can improve the accuracy and timeliness of financial analysis.
-Researchers: Can “build stronger grant proposals and literature reviews by searching across primary sources on the web, spotting emerging trends and identifying gaps in the current literature.” This capability can accelerate the research process and lead to more comprehensive and insightful findings.
-Shoppers: Can “compare product features, prices, and reviews across multiple sources to make more informed purchase decisions.”
-While the initial rollout is limited to paid users in the US, Anthropic assures that support for users on their free plan and more countries is coming soon.
-
-To activate the web search feature, users simply need to “toggle on web search in your profile settings and start a conversation with Claude 3.7 Sonnet.” Once enabled, “When applicable, Claude will search the web to inform its response.”
-
-This update aims to make Claude a more powerful and versatile tool for a wide range of tasks. By providing access to real-time information and ensuring transparency through citations, Anthropic is addressing key challenges and further solidifying Claude’s position as a leading AI assistant.
-
-(Image credit: Anthropic)
-
-See also: Hugging Face calls for open-source focus in the AI Action Plan
-
-
-Want to learn more about AI and big data from industry leaders? Check out AI & Big Data Expo taking place in Amsterdam, California, and London. The comprehensive event is co-located with other leading events including Intelligent Automation Conference, BlockX, Digital Transformation Week, and Cyber Security & Cloud Expo.
-`
+This technology is expected to drive major changes across healthcare, education, transportation,
+and many other sectors in the coming years.
+`;
+  }
+}
 
 // Function to generate tweet text
 async function generateTweetText() {
   try {
     console.log('Gerando texto do tweet...');
+    
+    // Fetch AI news to use as content
+    const newsContent = await fetchAINews();
     
     const response = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
@@ -49,7 +72,7 @@ async function generateTweetText() {
         messages: [
           {
             role: 'user',
-            content: 'Generate an attention-grabbing tweet in English for marketing purposes. Use emojis strategically. Must be under 280 characters and compelling. Make it stand out. follow the content: ' + CONTENT
+            content: 'Generate an attention-grabbing tweet in English for marketing purposes. Use emojis strategically. Must be under 280 characters and compelling. Make it stand out. follow the content: ' + newsContent
           }
         ],
         max_tokens: 280
@@ -74,7 +97,7 @@ async function generateTweetText() {
   }
 }
 
-test('Post a tweet generated by Claude 3.5', async ({ page, context }) => {
+test('Post a tweet generated by Claude 3.7', async ({ page, context }) => {
   // Configurações adicionais para evitar detecção de automação
   await context.addInitScript(() => {
     // Esconder sinais de automação

@@ -3,6 +3,38 @@ const axios = require('axios');
 require('dotenv').config();
 
 const CONTENT = `
+Anthropic has announced its AI assistant Claude can now search the web, providing users with more up-to-date and relevant responses.
+
+This integration of web search functionality means Claude can now access the latest information to expand its knowledge base beyond its initial training data.
+
+A key feature of this update is the emphasis on transparency and fact-checking. Anthropic highlights that “When Claude incorporates information from the web into its responses, it provides direct citations so you can easily fact check sources.”
+
+Furthermore, Claude aims to streamline the information-gathering process for users. Instead of requiring users to manually sift through search engine results, “Claude processes and delivers relevant sources in a conversational format.”
+
+Claude can now search the web.
+
+Each response includes inline citations, so you can also verify the sources. pic.twitter.com/iFshgfUEp8
+
+— Anthropic (@AnthropicAI)
+March 20, 2025
+Anthropic believes this enhancement will unlock a multitude of new use cases for Claude across various industries. They outlined several ways users can leverage Claude with web search:
+
+Sales teams: Can now “transform account planning and drive higher win rates through informed conversations with prospects by analysing industry trends to learn key initiatives and pain points.” This allows sales professionals to have more informed and persuasive conversations with potential clients.
+Financial analysts: Can “assess current market data, earnings reports, and industry trends to make better investment decisions and inform financial model assumptions.” Access to real-time financial data can improve the accuracy and timeliness of financial analysis.
+Researchers: Can “build stronger grant proposals and literature reviews by searching across primary sources on the web, spotting emerging trends and identifying gaps in the current literature.” This capability can accelerate the research process and lead to more comprehensive and insightful findings.
+Shoppers: Can “compare product features, prices, and reviews across multiple sources to make more informed purchase decisions.”
+While the initial rollout is limited to paid users in the US, Anthropic assures that support for users on their free plan and more countries is coming soon.
+
+To activate the web search feature, users simply need to “toggle on web search in your profile settings and start a conversation with Claude 3.7 Sonnet.” Once enabled, “When applicable, Claude will search the web to inform its response.”
+
+This update aims to make Claude a more powerful and versatile tool for a wide range of tasks. By providing access to real-time information and ensuring transparency through citations, Anthropic is addressing key challenges and further solidifying Claude’s position as a leading AI assistant.
+
+(Image credit: Anthropic)
+
+See also: Hugging Face calls for open-source focus in the AI Action Plan
+
+
+Want to learn more about AI and big data from industry leaders? Check out AI & Big Data Expo taking place in Amsterdam, California, and London. The comprehensive event is co-located with other leading events including Intelligent Automation Conference, BlockX, Digital Transformation Week, and Cyber Security & Cloud Expo.
 `
 
 // Function to generate tweet text
@@ -13,7 +45,7 @@ async function generateTweetText() {
     const response = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
       {
-        model: 'anthropic/claude-3-5-sonnet',
+        model: 'anthropic/claude-3.7-sonnet',
         messages: [
           {
             role: 'user',
